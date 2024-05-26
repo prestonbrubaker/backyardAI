@@ -2,12 +2,14 @@ import torch
 import torch.nn as nn
 
 # Number of Latent Variables
-latent_variables_c = 8
+latent_variables_c = 8  # You can change this value to control the number of latent variables
 
 
 class VAE(nn.Module):
-    def __init__(self):
+    def __init__(self, latent_dim):
         super(VAE, self).__init__()
+        self.latent_dim = latent_dim
+        
         # Encoder
         self.encoder = nn.Sequential(
             nn.Conv2d(1, 32, kernel_size=4, stride=2, padding=1),
@@ -20,9 +22,12 @@ class VAE(nn.Module):
             nn.ReLU()
         )
         
-        self.fc_mu = nn.Linear(256 * latent_variables_c * latent_variables_c, 512)
-        self.fc_logvar = nn.Linear(256 * latent_variables_c * latent_variables_c, 512)
-        self.fc_decode = nn.Linear(512, 256 * latent_variables_c * latent_variables_c)
+        # Calculate the flattened size of the encoder output
+        self.flattened_size = 256 * 16 * 16
+        
+        self.fc_mu = nn.Linear(self.flattened_size, latent_dim)
+        self.fc_logvar = nn.Linear(self.flattened_size, latent_dim)
+        self.fc_decode = nn.Linear(latent_dim, self.flattened_size)
         
         # Decoder
         self.decoder = nn.Sequential(
@@ -50,7 +55,7 @@ class VAE(nn.Module):
     
     def decode(self, z):
         h = self.fc_decode(z)
-        h = h.view(h.size(0), 256, latent_variables_c, latent_variables_c)
+        h = h.view(h.size(0), 256, 16, 16)
         return self.decoder(h)
     
     def forward(self, x):

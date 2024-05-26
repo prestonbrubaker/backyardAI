@@ -32,7 +32,7 @@ dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 vae = VAE().to(device)
-optimizer = optim.Adam(vae.parameters(), lr=1e-3)
+optimizer = optim.Adam(vae.parameters(), lr=0.01)
 
 num_epochs = 5000
 save_interval = 100

@@ -1,11 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader, Dataset
-from torchvision import transforms, datasets
-from torchvision.utils import save_image
-import os
-from PIL import Image
 
 class VAE(nn.Module):
     def __init__(self):

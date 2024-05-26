@@ -27,14 +27,19 @@ def add_red_highlight(original_img, recreated_img):
 
     # Normalize the squared difference to range [0, 255]
     max_diff = np.max(squared_diff)
-    scaled_diff = (squared_diff / max_diff * 255).astype(np.uint8)
+    if max_diff > 0:
+        scaled_diff = (squared_diff / max_diff * 255).astype(np.uint8)
+    else:
+        scaled_diff = np.zeros_like(squared_diff, dtype=np.uint8)
 
     # Create the red highlight image
-    red_highlight = np.zeros_like(original_np)
+    red_highlight = np.zeros((256, 256, 3), dtype=np.uint8)
     red_highlight[..., 0] = scaled_diff  # Red channel
 
     # Combine the original image and the red highlight
-    highlighted_img = np.clip(original_np + red_highlight, 0, 255).astype(np.uint8)
+    highlighted_img = np.stack([original_np] * 3, axis=-1) + red_highlight
+    highlighted_img = np.clip(highlighted_img, 0, 255).astype(np.uint8)
+
     return Image.fromarray(highlighted_img)
 
 # Function to process images and save highlighted images

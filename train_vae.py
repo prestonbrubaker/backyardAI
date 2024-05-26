@@ -53,6 +53,7 @@ for epoch in range(num_epochs):
     
     if (epoch + 1) % save_interval == 0:
         torch.save(vae.state_dict(), f"vae.pth")
+        print("MODEL SAVED")
         with torch.no_grad():
             vae.eval()
             for i, batch in enumerate(dataloader):

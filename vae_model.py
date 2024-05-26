@@ -2,10 +2,10 @@ import torch
 import torch.nn as nn
 
 # Number of Latent Variables
-latent_dim = 128  # You can change this value to control the number of latent variables
+latent_dim = 2128  # You can change this value to control the number of latent variables
 
 class VAE(nn.Module):
-    def __init__(self):
+    def __init__(self, latent_dim):
         super(VAE, self).__init__()
         self.latent_dim = latent_dim
         
@@ -65,4 +65,4 @@ class VAE(nn.Module):
 def loss_function(recon_x, x, mu, logvar):
     BCE = nn.functional.binary_cross_entropy(recon_x, x, reduction='sum')
     KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
-    return BCE + KLD
+    return BCE, KLD

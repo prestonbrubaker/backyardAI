@@ -6,9 +6,12 @@ from torchvision.utils import save_image
 from PIL import Image
 from vae_model import VAE
 
+# Number of Latent Variables
+latent_dim = 24  # Adjust this to match the latent dimensions used during training
+
 # Load the trained VAE model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-vae = VAE().to(device)
+vae = VAE(latent_dim=latent_dim).to(device)
 vae.load_state_dict(torch.load("vae.pth"))
 vae.eval()
 

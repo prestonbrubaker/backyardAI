@@ -34,8 +34,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 vae = VAE().to(device)
 optimizer = optim.Adam(vae.parameters(), lr=1e-3)
 
-num_epochs = 50
-save_interval = 10
+num_epochs = 5000
+save_interval = 100
 
 for epoch in range(num_epochs):
     vae.train()

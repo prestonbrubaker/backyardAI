@@ -28,11 +28,11 @@ transform = transforms.Compose([
 ])
 
 dataset = CustomImageDataset(image_folder='photos_processed', transform=transform)
-dataloader = DataLoader(dataset, batch_size=2, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 vae = VAE().to(device)
-optimizer = optim.Adam(vae.parameters(), lr=0.0001)
+optimizer = optim.Adam(vae.parameters(), lr=0.00001)
 
 num_epochs = 5000
 save_interval = 100

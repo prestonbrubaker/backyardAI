@@ -32,6 +32,14 @@ dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 vae = VAE().to(device)
+
+# Load the model if it exists
+model_path = "vae.pth"
+if os.path.exists(model_path):
+    vae.load_state_dict(torch.load(model_path))
+    print("Loaded existing model from vae.pth")
+
+
 optimizer = optim.Adam(vae.parameters(), lr=0.000001)
 
 num_epochs = 5000

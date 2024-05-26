@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 # Number of Latent Variables
-latent_variables_c = 5
+latent_variables_c = 8
 
 
 class VAE(nn.Module):
@@ -50,7 +50,7 @@ class VAE(nn.Module):
     
     def decode(self, z):
         h = self.fc_decode(z)
-        h = h.view(h.size(0), 256, 16, 16)
+        h = h.view(h.size(0), 256, latent_variables_c, latent_variables_c)
         return self.decoder(h)
     
     def forward(self, x):

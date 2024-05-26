@@ -52,7 +52,7 @@ for epoch in range(num_epochs):
     print(f"Epoch {epoch + 1}, Loss: {train_loss / len(dataloader.dataset)}")
     
     if (epoch + 1) % save_interval == 0:
-        torch.save(vae.state_dict(), f"vae_epoch_{epoch + 1}.pth")
+        torch.save(vae.state_dict(), f"vae.pth")
         with torch.no_grad():
             vae.eval()
             for i, batch in enumerate(dataloader):

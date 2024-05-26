@@ -9,7 +9,7 @@ from vae_model import VAE
 # Load the trained VAE model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 vae = VAE().to(device)
-vae.load_state_dict(torch.load("vae_epoch_50.pth"))
+vae.load_state_dict(torch.load("vae.pth"))
 vae.eval()
 
 # Define the transform for the images

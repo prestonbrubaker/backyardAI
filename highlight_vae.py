@@ -3,7 +3,7 @@ import torch
 import numpy as np
 from torchvision import transforms
 from torchvision.utils import save_image
-from PIL import Image, ImageOps
+from PIL import Image
 from vae_model import VAE
 
 # Load the trained VAE model
@@ -43,9 +43,12 @@ def add_red_highlight(original_img, recreated_img):
     return Image.fromarray(highlighted_img)
 
 # Function to process images and save highlighted images
-def process_images(input_folder, output_folder):
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
+def process_images(input_folder, output_highlight_folder, output_reconstruction_folder):
+    if not os.path.exists(output_highlight_folder):
+        os.makedirs(output_highlight_folder)
+    
+    if not os.path.exists(output_reconstruction_folder):
+        os.makedirs(output_reconstruction_folder)
 
     for root, dirs, files in os.walk(input_folder):
         for file in sorted(files):  # Ensure files are processed in order
@@ -65,14 +68,21 @@ def process_images(input_folder, output_folder):
                     highlighted_img = add_red_highlight(original_img, recon_img)
 
                     # Save the highlighted image
-                    output_file_path = os.path.join(output_folder, file)
-                    highlighted_img.save(output_file_path)
-                    print(f"Processed and saved: {output_file_path}")
+                    output_highlight_path = os.path.join(output_highlight_folder, file)
+                    highlighted_img.save(output_highlight_path)
+                    
+                    # Save the grayscale reconstructed image
+                    output_reconstruction_path = os.path.join(output_reconstruction_folder, file)
+                    recon_img.save(output_reconstruction_path)
+                    
+                    print(f"Processed and saved: {output_highlight_path}")
+                    print(f"Reconstructed and saved: {output_reconstruction_path}")
 
                 except Exception as e:
                     print(f"Skipping file {file_path} due to an error: {e}")
 
 if __name__ == "__main__":
     input_folder = "photos_processed"  # Path to the folder containing processed photos
-    output_folder = "photos_vae_processed"  # Path to the folder to save highlighted photos
-    process_images(input_folder, output_folder)
+    output_highlight_folder = "photos_vae_processed"  # Path to the folder to save highlighted photos
+    output_reconstruction_folder = "photos_vae_reconstruction"  # Path to the folder to save reconstructed photos
+    process_images(input_folder, output_highlight_folder, output_reconstruction_folder)

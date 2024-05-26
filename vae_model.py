@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 # Number of Latent Variables
-latent_dim = 8  # You can change this value to control the number of latent variables
+latent_dim = 3  # You can change this value to control the number of latent variables
 
 class VAE(nn.Module):
     def __init__(self):

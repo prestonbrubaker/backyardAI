@@ -31,7 +31,7 @@ dataset = CustomImageDataset(image_folder='photos_processed', transform=transfor
 dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-vae = VAE(latent_dim=24).to(device)
+vae = VAE().to(device)
 optimizer = optim.Adam(vae.parameters(), lr=0.000001)
 
 num_epochs = 5000

@@ -31,8 +31,8 @@ dataset = CustomImageDataset(image_folder='photos_processed', transform=transfor
 dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-vae = VAE().to(device)
-optimizer = optim.Adam(vae.parameters(), lr=0.00001)
+vae = VAE(latent_dim=24).to(device)
+optimizer = optim.Adam(vae.parameters(), lr=0.000001)
 
 num_epochs = 5000
 save_interval = 100
@@ -40,16 +40,21 @@ save_interval = 100
 for epoch in range(num_epochs):
     vae.train()
     train_loss = 0
+    train_bce = 0
+    train_kld = 0
     for batch in dataloader:
         batch = batch.to(device)
         optimizer.zero_grad()
         recon_batch, mu, logvar = vae(batch)
-        loss = loss_function(recon_batch, batch, mu, logvar)
+        bce, kld = loss_function(recon_batch, batch, mu, logvar)
+        loss = bce + kld
         loss.backward()
         train_loss += loss.item()
+        train_bce += bce.item()
+        train_kld += kld.item()
         optimizer.step()
     
-    print(f"Epoch {epoch + 1}, Loss: {train_loss / len(dataloader.dataset)}")
+    print(f"Epoch {epoch + 1}, Total Loss: {train_loss / len(dataloader.dataset)}, BCE: {train_bce / len(dataloader.dataset)}, KLD: {train_kld / len(dataloader.dataset)}")
     
     if (epoch + 1) % save_interval == 0:
         torch.save(vae.state_dict(), f"vae.pth")

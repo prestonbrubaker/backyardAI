@@ -1,6 +1,10 @@
 import torch
 import torch.nn as nn
 
+# Number of Latent Variables
+latent_variables_c = 5
+
+
 class VAE(nn.Module):
     def __init__(self):
         super(VAE, self).__init__()
@@ -16,9 +20,9 @@ class VAE(nn.Module):
             nn.ReLU()
         )
         
-        self.fc_mu = nn.Linear(256 * 16 * 16, 512)
-        self.fc_logvar = nn.Linear(256 * 16 * 16, 512)
-        self.fc_decode = nn.Linear(512, 256 * 16 * 16)
+        self.fc_mu = nn.Linear(256 * latent_variables_c * latent_variables_c, 512)
+        self.fc_logvar = nn.Linear(256 * latent_variables_c * latent_variables_c, 512)
+        self.fc_decode = nn.Linear(512, 256 * latent_variables_c * latent_variables_c)
         
         # Decoder
         self.decoder = nn.Sequential(

@@ -28,7 +28,7 @@ transform = transforms.Compose([
 ])
 
 dataset = CustomImageDataset(image_folder='photos_processed', transform=transform)
-dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=16, shuffle=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 vae = VAE().to(device)
@@ -40,7 +40,7 @@ if os.path.exists(model_path):
     print("Loaded existing model from vae.pth")
 
 
-optimizer = optim.Adam(vae.parameters(), lr=0.000001)
+optimizer = optim.Adam(vae.parameters(), lr=0.001)
 
 num_epochs = 5000
 save_interval = 100

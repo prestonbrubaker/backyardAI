@@ -40,7 +40,7 @@ if os.path.exists(model_path):
     print("Loaded existing model from vae.pth")
 
 
-optimizer = optim.Adam(vae.parameters(), lr=0.001)
+optimizer = optim.Adam(vae.parameters(), lr=0.0001)
 
 num_epochs = 5000
 save_interval = 100

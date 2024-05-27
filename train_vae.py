@@ -28,7 +28,7 @@ transform = transforms.Compose([
 ])
 
 dataset = CustomImageDataset(image_folder='photos_processed', transform=transform)
-dataloader = DataLoader(dataset, batch_size=16, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 vae = VAE().to(device)

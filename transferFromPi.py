@@ -1,6 +1,8 @@
 import os
 import shutil
+import time
 from time import strftime, gmtime
+from threading import Thread
 
 local_dir = os.path.expanduser('~/Desktop/presloh_camera/photos/')
 organized_dir = os.path.expanduser('~/Desktop/presloh_camera/organized_photos/')
